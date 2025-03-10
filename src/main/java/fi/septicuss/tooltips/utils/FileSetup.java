@@ -39,14 +39,14 @@ public class FileSetup {
 			Tooltips.warn("Failed to set up config.yml");
 			e.printStackTrace();
 		}
-
+		/*
 		try {
 			setupSecondaryConfigs(plugin);
 		} catch (IOException e) {
 			Tooltips.warn("Failed to set up secondary configs");
 			e.printStackTrace();
 		}
-
+		*/
 	}
 
 	private static void setupMainConfig(Tooltips plugin) throws IOException {
