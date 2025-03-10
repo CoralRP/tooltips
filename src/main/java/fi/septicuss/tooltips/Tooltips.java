@@ -79,6 +79,8 @@ import fi.septicuss.tooltips.utils.cache.furniture.FurnitureCache;
 import fi.septicuss.tooltips.utils.cache.tooltip.TooltipCache;
 import fi.septicuss.tooltips.utils.font.Widths;
 import fi.septicuss.tooltips.utils.variable.Variables;
+import it.coralrp.laroc.api.Laroc;
+import it.coralrp.laroc.furniture.api.FurnitureModule;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -111,6 +113,9 @@ public class Tooltips extends JavaPlugin {
 	private ConditionManager conditionManager;
 	private TooltipManager tooltipManager;
 
+	private Laroc laroc;
+	private FurnitureModule furnitureModule;
+
 	// ------------------------------------------------------
 
 	public Tooltips() {
@@ -124,6 +129,8 @@ public class Tooltips extends JavaPlugin {
 	public void onEnable() {
 		FileSetup.setupFiles(this);
 
+		this.laroc = Laroc.PLUGIN.getLaroc();
+		this.furnitureModule = laroc.getModuleManager().getModule(FurnitureModule.class);
 		this.adventure = BukkitAudiences.create(this);
 
 		titleManager = new TitleManager(this);
@@ -314,6 +321,10 @@ public class Tooltips extends JavaPlugin {
 			throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
 		}
 		return this.adventure;
+	}
+
+	public FurnitureModule getFurnitureModule() {
+		return furnitureModule;
 	}
 
 	public IntegrationManager getIntegrationManager() {

@@ -9,6 +9,7 @@ import fi.septicuss.tooltips.managers.integration.impl.betonquest.actions.Select
 import fi.septicuss.tooltips.managers.integration.impl.betonquest.conversation.TooltipsConversationIO;
 import fi.septicuss.tooltips.managers.integration.impl.crucible.CrucibleFurnitureProvider;
 import fi.septicuss.tooltips.managers.integration.impl.itemsadder.ItemsAdderFurnitureProvider;
+import fi.septicuss.tooltips.managers.integration.impl.laroc.LarocFurnitureProvider;
 import fi.septicuss.tooltips.managers.integration.impl.nexo.NexoFurnitureProvider;
 import fi.septicuss.tooltips.managers.integration.impl.oraxen.OraxenFurnitureProvider;
 import fi.septicuss.tooltips.managers.integration.impl.packetevents.PacketEventsPacketProvider;
@@ -57,6 +58,10 @@ public class IntegrationManager {
 
         if (isPresent("ItemsAdder")) {
             this.addFurnitureProvider(new ItemsAdderFurnitureProvider());
+        }
+
+        if (isPresent("Laroc")) {
+            this.addFurnitureProvider(new LarocFurnitureProvider());
         }
 
         if (isPresent("MythicCrucible")) {
