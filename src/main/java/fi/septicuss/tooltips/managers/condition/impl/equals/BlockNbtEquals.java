@@ -64,7 +64,7 @@ public class BlockNbtEquals implements Condition {
 
 	@Override
 	public Validity valid(Arguments args) {
-		if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
+		if (!Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
 			return Validity.of(false, "Cannot use blocknbtequals because NBTAPI is not installed");
 		}
 

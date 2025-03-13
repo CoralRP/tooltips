@@ -1,6 +1,7 @@
 package fi.septicuss.tooltips.managers.condition.impl.lookingat;
 
 import fi.septicuss.tooltips.managers.condition.Condition;
+import fi.septicuss.tooltips.managers.condition.Context;
 import fi.septicuss.tooltips.managers.condition.argument.Argument;
 import fi.septicuss.tooltips.managers.condition.argument.Arguments;
 import fi.septicuss.tooltips.managers.condition.type.EnumOptions;
@@ -19,6 +20,19 @@ public class LookingAtBlock implements Condition {
 
 	@Override
 	public boolean check(Player player, Arguments args) {
+		return getLookedAtBlock(player, args) != null;
+	}
+
+	@Override
+	public void writeContext(Player player, Arguments args, Context context) {
+		Block block = getLookedAtBlock(player, args);
+		if (block != null) {
+			context.put("block.type", block.getType().name());
+			context.put("block.location", block.getLocation().toVector().toString());
+		}
+	}
+
+	private Block getLookedAtBlock(Player player, Arguments args) {
 		EnumOptions<Material> materials = null;
 		MultiLocation locations = null;
 		int distance = 3;
@@ -33,34 +47,24 @@ public class LookingAtBlock implements Condition {
 			locations = MultiLocation.of(player, args.get(LOCATION_ALIASES).getAsString());
 
 		var rayTrace = Utils.getRayTraceResult(player, distance);
-		
 		if (rayTrace == null)
-			return false;
-		
+			return null;
+
 		Block target = rayTrace.getHitBlock();
+		if (target == null)
+			return null;
 
-		if (target == null) {
-			if (materials == null)
-				return false;
-			return materials.contains(Material.AIR);
-		}
+		boolean validMaterial = (materials == null || materials.contains(target.getType()));
+		boolean validLocation = (locations == null || locations.contains(target.getLocation()));
 
-		boolean validMaterial = (materials == null ? true : materials.contains(target.getType()));
-		boolean validLocation = (locations == null ? true : locations.contains(target.getLocation()));
-
-		return (validMaterial && validLocation);
+		return (validMaterial && validLocation) ? target : null;
 	}
 
 	@Override
 	public Validity valid(Arguments args) {
-
-		if (!args.has(MATERIAL_ALIASES) && !args.has(LOCATION_ALIASES))
-			return Validity.of(false, "A material and/or location argument is required");
-
 		if (args.has(MATERIAL_ALIASES)) {
 			Argument materialArg = args.get(MATERIAL_ALIASES);
 			Validity optionValidity = EnumOptions.validity(Material.class, materialArg.getAsString());
-
 			if (!optionValidity.isValid()) {
 				return optionValidity;
 			}
@@ -69,7 +73,6 @@ public class LookingAtBlock implements Condition {
 		if (args.has(LOCATION_ALIASES)) {
 			Argument locationArg = args.get(LOCATION_ALIASES);
 			Validity multiLocationValidity = MultiLocation.validityOf(locationArg.getAsString());
-
 			if (!multiLocationValidity.isValid()) {
 				return multiLocationValidity;
 			}
