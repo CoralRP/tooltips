@@ -104,6 +104,19 @@ publishing {
             from(components.java)
         }
     }
+
+    repositories {
+        maven {
+            url "https://repo.coralmc.it/releases"
+            credentials {
+                username "$mavenUser"
+                password "$mavenPassword"
+            }
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
 }
 
 tasks.withType(JavaCompile) {
