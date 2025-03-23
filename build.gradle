@@ -94,8 +94,7 @@ dependencies {
     compileOnly 'it.coralrp.laroc.furniture:api:1.0.1-SNAPSHOT'
 }
 
-apply plugin: 'maven-publish'
-group = 'com.github.CoralRP'
+group = 'it.coralrp.laroc'
 version = '2.3'
 description = 'tooltips'
 
