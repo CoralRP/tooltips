@@ -46,7 +46,7 @@ repositories {
     }
 
     maven {
-        url = uri('https://repo.nexomc.com/snapshots/')
+        url = uri('https://repo.nexomc.com/releases/')
     }
 
     maven {
@@ -79,7 +79,7 @@ dependencies {
     compileOnly 'com.comphenix.protocol:ProtocolLib:4.7.0'
     compileOnly 'me.clip:placeholderapi:2.11.6'
     compileOnly 'io.th0rgal:oraxen:1.182.0'
-    compileOnly 'com.nexomc:nexo:1.0.0-dev.37'
+    compileOnly 'com.nexomc:nexo:1.0.0'
     compileOnly 'de.tr7zw:item-nbt-api-plugin:2.14.1'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.7'
     compileOnly 'io.lumine:Mythic-Dist:5.3.5'
