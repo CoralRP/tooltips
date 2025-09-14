@@ -2,7 +2,9 @@ package fi.septicuss.tooltips.listener;
 
 import fi.septicuss.tooltips.Tooltips;
 import fi.septicuss.tooltips.managers.preset.actions.DefaultTooltipAction;
+import fi.septicuss.tooltips.managers.tooltip.Tooltip;
 import fi.septicuss.tooltips.managers.tooltip.TooltipManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,7 +13,13 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class PlayerInteractListener implements Listener {
 
@@ -19,6 +27,14 @@ public class PlayerInteractListener implements Listener {
 
 	public PlayerInteractListener(Tooltips plugin) {
 		this.plugin = plugin;
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void on(PlayerToggleSneakEvent event) {
+		final TooltipManager manager = getManager();
+		if (manager == null) return;
+		if (event.isSneaking())
+			manager.runActions(DefaultTooltipAction.ON_SNEAK, event.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -45,7 +61,7 @@ public class PlayerInteractListener implements Listener {
 			manager.runActions(DefaultTooltipAction.RIGHT_CLICK_AIR, player);
 			manager.runActions(DefaultTooltipAction.RIGHT_CLICK, player);
 		}
-		
+
 		if (eventAction == Action.RIGHT_CLICK_BLOCK) {
 			manager.runActions(DefaultTooltipAction.RIGHT_CLICK_BLOCK, player);
 			manager.runActions(DefaultTooltipAction.RIGHT_CLICK, player);

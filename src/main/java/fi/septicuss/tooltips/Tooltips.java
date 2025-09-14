@@ -9,6 +9,7 @@ import fi.septicuss.tooltips.commands.subcommands.ListVarsCommand;
 import fi.septicuss.tooltips.commands.subcommands.ReloadCommand;
 import fi.septicuss.tooltips.commands.subcommands.SendPresetCommand;
 import fi.septicuss.tooltips.commands.subcommands.SendThemeCommand;
+import fi.septicuss.tooltips.commands.subcommands.StopDialogueCommand;
 import fi.septicuss.tooltips.commands.subcommands.VarsCommand;
 import fi.septicuss.tooltips.listener.PlayerConnectionListener;
 import fi.septicuss.tooltips.listener.PlayerInteractListener;
@@ -102,6 +103,7 @@ public class Tooltips extends JavaPlugin {
 	private static Tooltips INSTANCE;
 	private static Logger LOGGER;
 	private static boolean USE_SPACES;
+	private static boolean USE_SHADOWS;
 
 	private BukkitAudiences adventure;
 	private IntegrationManager integrationManager;
@@ -255,6 +257,7 @@ public class Tooltips extends JavaPlugin {
 		tooltipsCommand.register("vars", new VarsCommand());
 		tooltipsCommand.register("listvars", new ListVarsCommand());
 		tooltipsCommand.register("debug", new DebugCommand(this));
+		tooltipsCommand.register("stopdialogue", new StopDialogueCommand());
 
 		final PluginCommand tooltipsPluginCommand = Objects.requireNonNull(super.getCommand("tooltips"));
 		tooltipsPluginCommand.setExecutor(tooltipsCommand);
@@ -276,6 +279,7 @@ public class Tooltips extends JavaPlugin {
 		FileSetup.setupFiles(this);
 
 		USE_SPACES = this.getConfig().getBoolean("use-spaces", true);
+		USE_SHADOWS = this.getConfig().getBoolean("use-shadows", false);
 
 		this.schemaManager = new SchemaManager();
 		this.iconManager = new IconManager();
@@ -365,6 +369,10 @@ public class Tooltips extends JavaPlugin {
 
 	public static Logger logger() {
 		return LOGGER;
+	}
+
+	public boolean isUseShadows() {
+		return USE_SHADOWS;
 	}
 	
 	public boolean isUseSpaces() {

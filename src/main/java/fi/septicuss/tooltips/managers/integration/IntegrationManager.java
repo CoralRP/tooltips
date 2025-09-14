@@ -7,10 +7,12 @@ import fi.septicuss.tooltips.managers.integration.impl.betonquest.actions.EndCon
 import fi.septicuss.tooltips.managers.integration.impl.betonquest.actions.NextOptionCommand;
 import fi.septicuss.tooltips.managers.integration.impl.betonquest.actions.SelectOptionCommand;
 import fi.septicuss.tooltips.managers.integration.impl.betonquest.conversation.TooltipsConversationIO;
+import fi.septicuss.tooltips.managers.integration.impl.betonquest.conversation.TooltipsConversationIOFactory;
 import fi.septicuss.tooltips.managers.integration.impl.crucible.CrucibleFurnitureProvider;
 import fi.septicuss.tooltips.managers.integration.impl.itemsadder.ItemsAdderFurnitureProvider;
 import fi.septicuss.tooltips.managers.integration.impl.laroc.LarocFurnitureProvider;
 import fi.septicuss.tooltips.managers.integration.impl.nexo.NexoFurnitureProvider;
+import fi.septicuss.tooltips.managers.integration.impl.nexo.NexoListener;
 import fi.septicuss.tooltips.managers.integration.impl.oraxen.OraxenFurnitureProvider;
 import fi.septicuss.tooltips.managers.integration.impl.packetevents.PacketEventsPacketProvider;
 import fi.septicuss.tooltips.managers.integration.impl.papi.TooltipsExpansion;
@@ -25,6 +27,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -32,12 +36,14 @@ import java.util.Optional;
 
 public class IntegrationManager {
 
+    private final Tooltips plugin;
     private final HashMap<String, FurnitureProvider> furnitureProviders = new HashMap<>();
     private final HashMap<String, AreaProvider> areaProviders = new HashMap<>();
     private PacketProvider packetProvider;
 
-    public IntegrationManager(Tooltips plugin) {
 
+    public IntegrationManager(Tooltips plugin) {
+        this.plugin = plugin;
     }
 
     public void registerDefaultIntegrations() {
@@ -50,6 +56,7 @@ public class IntegrationManager {
 
         if (isPresent("Nexo")) {
             this.addFurnitureProvider(new NexoFurnitureProvider());
+            this.plugin.getServer().getPluginManager().registerEvents(new NexoListener(plugin), plugin);
         }
 
         if (isPresent("Oraxen")) {
@@ -84,7 +91,20 @@ public class IntegrationManager {
         }
 
         if (isPresent("BetonQuest")) {
-            BetonQuest.getInstance().registerConversationIO("tooltips", TooltipsConversationIO.class);
+            Plugin betonQuestPlugin = Bukkit.getPluginManager().getPlugin("BetonQuest");
+
+            if (betonQuestPlugin == null || !betonQuestPlugin.isEnabled())
+                return;
+
+            PluginDescriptionFile description = betonQuestPlugin.getDescription();
+            String version = description.getVersion();
+
+            if (!version.startsWith("3")) {
+                Tooltips.warn("This version of Tooltips is only compatible with BetonQuest version larger than 3");
+                return;
+            }
+
+            BetonQuest.getInstance().getFeatureRegistries().conversationIO().register("tooltips", new TooltipsConversationIOFactory());
             Tooltips.get().getConditionManager().register(new BetonQuestCondition());
             ActionCommands.addCommand("selectoption", new SelectOptionCommand());
             ActionCommands.addCommand("endconversation", new EndConversationCommand());
