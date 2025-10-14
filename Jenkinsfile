@@ -8,6 +8,12 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                scmSkip(deleteBuild: false, skipPattern:'.*\\[no build\\].*')
+            }
+        }
+
         stage('Build e caricamento del modulo') {
             when {
                 anyOf {
@@ -39,6 +45,20 @@ pipeline {
                             )
                         ])
                     }
+                }
+            }
+        }
+
+        stage('Publish su Maven') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'master'
+                }
+            }
+            steps {
+                script {
+                    sh "./gradlew publish -PmavenUser=$MAVEN_USER_USR -PmavenPassword=$MAVEN_USER_PSW"
                 }
             }
         }
