@@ -4,7 +4,7 @@ pipeline {
     environment {
         MAVEN_USER = credentials('maven')
         TELEGRAM_TOKEN = credentials('telegramToken')
-        TELEGRAM_CHAT_ID = "-1001869636392"
+        TELEGRAM_CHAT_ID = credentials('telegramLogs')
     }
 
     stages {
