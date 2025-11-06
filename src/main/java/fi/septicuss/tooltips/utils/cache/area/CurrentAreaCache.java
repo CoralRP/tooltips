@@ -2,11 +2,7 @@ package fi.septicuss.tooltips.utils.cache.area;
 
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class CurrentAreaCache {
 

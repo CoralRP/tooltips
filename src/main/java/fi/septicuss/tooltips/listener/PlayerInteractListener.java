@@ -2,9 +2,7 @@ package fi.septicuss.tooltips.listener;
 
 import fi.septicuss.tooltips.Tooltips;
 import fi.septicuss.tooltips.managers.preset.actions.DefaultTooltipAction;
-import fi.septicuss.tooltips.managers.tooltip.Tooltip;
 import fi.septicuss.tooltips.managers.tooltip.TooltipManager;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,13 +11,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 public class PlayerInteractListener implements Listener {
 

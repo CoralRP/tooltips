@@ -4,8 +4,6 @@ import fi.septicuss.tooltips.managers.condition.argument.Argument;
 import fi.septicuss.tooltips.managers.preset.functions.Function;
 import fi.septicuss.tooltips.managers.preset.functions.FunctionContext;
 import fi.septicuss.tooltips.utils.Placeholders;
-import fi.septicuss.tooltips.utils.Text;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
